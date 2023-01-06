@@ -3,7 +3,7 @@ import {BrowserRouter, Route, Routes} from 'react-router-dom'
 import FooterComponents from './components/FooterComponents';
 import HeaderComponents from './components/HeaderComponents';
 import ListEmployeeComponent from './components/ListEmployeeComponent';
-import CreateEmployeeComponent from './components/CreateEmployeeComponent';
+import AddEmployee from './components/AddEmployee';
 
 
 const PATH_TO_HOME = '/';
@@ -21,7 +21,7 @@ function App() {
               <Routes>
                 <Route path= {PATH_TO_HOME} element={<ListEmployeeComponent />} /> 
                 <Route path = {PATH_TO_EMPLOYEE_LIST} element= {<ListEmployeeComponent />} />
-                <Route path= {PATH_TO_ADD_EMPLOYEE} element= {<CreateEmployeeComponent />} />
+                <Route path= {PATH_TO_ADD_EMPLOYEE} element= {<AddEmployee />} />
               </Routes>
             </div>
 
