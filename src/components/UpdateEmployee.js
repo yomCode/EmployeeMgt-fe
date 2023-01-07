@@ -1,15 +1,12 @@
-import React, {useState } from 'react';
-import EmployeeService from '../services/EmployeeService';
-import Button from './Button';
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import EmployeeService from "../services/EmployeeService";
+import Button from "./Button";
 
 
+const UpdateEmployee = () => {
 
-// const CREATE_EMPLOYEE_ROUTE = "/api/v1/admin/add-employees";
-const PATH_TO_EMPLOYEE_LIST = '/api/v1/admin/all-employees';
-
-
-const AddEmployee = (props) => {
-
+    const [id] = useParams();
     const [employee, setEmployee] = useState({
 
         id: "",
@@ -18,34 +15,36 @@ const AddEmployee = (props) => {
         email: ""
     })
 
-
     const handleChange = (e) => {
         const value = e.target.value;
         setEmployee({ ...employee, [e.target.name]: value});
     }
 
-    const saveEmployee = (e) => {
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try{
+                const response = await EmployeeService.getEmployeeById(id);
+                setEmployee(response.fetchData)
+            }catch(error){
+                console.log(error)
+            }
+        };
+        fetchData();
+    }, [id])
+
+    const updateEmployee = (e) => {
         e.preventDefault();
-        EmployeeService.saveEmployee(employee).then((response)=>{
-            console.log(response)
-        }).catch((error => {
-            console.log(error)
-        }))
-
     }
 
-    const cancel = (elem) => {
-        this.setState({})
-        window.location.href = PATH_TO_EMPLOYEE_LIST;
-
-    }
 
     return(
         <div>
             <div className='container'>
                 <div className='row'>
                     <div className='card col-md-6 offset-md-3 offset-md-3 offset-md-3'>
-                        <h3 className='text-center'>Add new Employee</h3>
+                        <h3 className='text-center'>Update Employee</h3>
                             <div className='card-body'>
                                 <form action="">
                                     <div className='form-group'>
@@ -64,8 +63,8 @@ const AddEmployee = (props) => {
                                         name='email' value={employee.email} onChange={(e) => handleChange(e)} />
                                     </div>
                                     <div>
-                                        <Button type="submit" classAttr="btn btn-success" title = "Save" click={saveEmployee} />
-                                        <Button type="button" classAttr="btn btn-danger" title = "Cancel" click={cancel.bind(this)} />
+                                        <Button type="submit" classAttr="btn btn-success" title = "Save" click={updateEmployee} />
+                                        <Button type="button" classAttr="btn btn-danger" title = "Cancel" />
                                     </div>                            
                                 </form>
                             </div>
@@ -77,4 +76,5 @@ const AddEmployee = (props) => {
     )
 }
 
-export default AddEmployee;
+
+export default UpdateEmployee;
